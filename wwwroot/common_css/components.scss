@@ -1,0 +1,441 @@
+﻿@import 'init.scss';
+@import '../css/init.scss';
+
+/*Меню*/
+ul.menu {
+    display: block;
+
+    > li {
+        display: block;
+        margin: 0;
+        text-align: left;
+    }
+
+    > li:not(:first-child) {
+        margin-top: $margin-fourth;
+    }
+
+    > li > a {
+        display: block;
+        text-decoration: none;
+        padding: $padding-fourth $padding-half $padding-fourth $padding-half;
+        position: relative;
+        transition: $transition;
+        color: $color-main2;
+        white-space: nowrap; /* Отменяем перенос текста */
+        overflow: hidden; /* Обрезаем содержимое */
+        text-overflow: ellipsis; /* Многоточие */
+        border: $border;
+        border-color: transparent;
+
+        &:hover {
+            color: $color-main1;
+            box-shadow: $box-shadow-control-focus;
+            -moz-box-shadow: $box-shadow-control-focus;
+            -webkit-box-shadow: $box-shadow-control-focus;
+            border-color: $color-main3;
+        }
+
+        &:hover:not(.selected):not([disabled]) {
+            color: $color-main1;
+        }
+
+        &.selected {
+            background: $color-main1;
+            font-weight: $font-weight-bold;
+            color: $color-light;
+        }
+
+        &[disabled] {
+            color: $color-text-disabled;
+            cursor: not-allowed;
+        }
+    }
+
+    &.horizontal {
+        display: inline-block;
+
+        > li {
+            display: inline-block;
+            margin: 0;
+            text-align: center;
+        }
+    }
+}
+/*Дропдаун*/
+.dropdown {
+    position: relative;
+    display: inline-block;
+    font-size: $font-size; //Нужно т.к. меню может быть внутри h2 например
+    .dropdown_content {
+        padding: $padding-half;
+        visibility: hidden;
+        opacity: 0;
+        position: absolute;
+        z-index: $z-index;
+        background: $color-light;
+        box-shadow: $box-shadow;
+        -moz-box-shadow: $box-shadow;
+        -webkit-box-shadow: $box-shadow;
+        right: 0;
+        top: 0;
+        //  left: 0;
+        transition: $transition;
+        transform: $transform-scale-hide-Y;
+    }
+
+    &.left_layout {
+        .dropdown_content {
+            left: 0;
+            right: auto;
+        }
+    }
+
+    &:hover .dropdown_content {
+        visibility: visible;
+        opacity: 1;
+        transform: $transform-scale-show-Y;
+    }
+}
+/*Дропдаун - control*/
+.dropdown_editror {
+    position: relative;
+    display: inline-block;
+    font-size: $font-size; //Нужно т.к. меню может быть внутри h2 например
+    .dropdown_content {
+        padding: $padding-half;
+        visibility: hidden;
+        opacity: 0;
+        position: absolute;
+        z-index: $z-index;
+        background: $color-light;
+        box-shadow: $box-shadow;
+        -moz-box-shadow: $box-shadow;
+        -webkit-box-shadow: $box-shadow;
+        left: 0;
+        right: auto;
+        top: 0;
+        //  left: 0;
+        transition: $transition;
+        transform: $transform-scale-hide-Y;
+    }
+
+    .dropdown_content.is_show {
+        visibility: visible;
+        opacity: 1;
+        transform: $transform-scale-show-Y;
+    }
+}
+/*Таблицы*/
+table.list {
+    width: 100%;
+    /*background: $color-control-background-background;*/
+    thead tr > * {
+        padding: $padding;
+        font-weight: $font-weight-bold;
+        border-bottom: $border-active $color-main3;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    thead tr .sortable {
+        cursor: pointer;
+    }
+
+    thead .sortable ::after {
+        content: "\f0dc";
+        color: $color-text-disabled;
+    }
+
+    thead .sortable.asc ::after {
+        content: "\f0de";
+        color: inherit;
+    }
+
+    thead .sortable.desc ::after {
+        content: "\f0dd";
+        color: inherit;
+    }
+
+    thead tr > td {
+        padding: $padding $padding;
+    }
+
+    tfoot td {
+        padding: $padding-half;
+        vertical-align: middle;
+        border: none;
+        font-weight: $font-weight-bold;
+    }
+
+    td {
+        padding: $padding $padding;
+        border-bottom: $border $color-control-border;
+        vertical-align: middle;
+        transition: $transition;
+    }
+
+    td.control, th.control {
+        text-align: right;
+        white-space: nowrap;
+        width: 1px;
+    }
+    /*tr:nth-child(2n+1) {
+        background: $color-control-border;
+    }*/
+    tbody tr > td {
+        transition: none;
+    }
+
+    tbody tr:hover > td {
+        border-bottom: $border $color-main3;
+    }
+
+    td.center {
+        text-align: center;
+    }
+}
+
+table.detail {
+    width: 100%;
+
+    td {
+        padding: $padding-half $padding;
+        //border-bottom: $border $color-control-border;
+        vertical-align: middle;
+    }
+}
+/*Табы*/
+ul.tab {
+    list-style: none;
+    /*float: left;*/
+    li {
+        display: inline-block;
+        padding: $padding;
+        box-sizing: border-box;
+        border-bottom: $border-active transparent;
+        cursor: pointer;
+        color: $color-text-disabled;
+        font-size: $font-size-h3;
+    }
+
+    li.selected {
+        color: $color-dark;
+        border-bottom: $border-active $color-main2;
+    }
+}
+
+/*Пагинация*/
+.paging {
+    button, .button {
+        margin-left: $margin-fourth;
+    }
+}
+/*Прогресс бар*/
+.progressbar {
+    height: $grid; // 4px
+    background: $color-main3;
+    margin-top: $grid / 2; // 4px
+    border-radius: $border-radius;
+
+    > div {
+        height: 100%;
+        background: $color-main1;
+        border-radius: $border-radius;
+    }
+}
+
+.scroll_button {
+    position: fixed;
+    right: $grid*4;
+    //bottom: $height-page-footer+$grid*4;
+    background: $color-main1;
+    opacity: 0.6;
+    display: none;
+    z-index: $z-index+1;
+    color: $color-light;
+    padding: $padding;
+    cursor: pointer;
+}
+
+/*Scroll bar*/
+/*::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: $color-control-background;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $color-main3;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: $color-main2;
+}*/
+
+/*Диалоги*/
+.dialog_overlay {
+    position: fixed;
+    z-index: $z-index+50;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    visibility: hidden;
+    opacity: 0;
+    text-align: center;
+    background: $shadow-color3;
+    transition: $transition;
+    // will-change: visibility;
+    .dialog {
+        display: inline-block;
+        margin: auto;
+        margin-top: $margin-dialog;
+        text-align: left;
+        border-radius: $border-radius;
+        transform: $transform-dialog-translate-hide;
+        transition: $transition-transform-quick;
+
+        .dialog_close_container {
+            padding: $padding-half 0;
+            color: $color-light;
+            font-size: $font-size-h3;
+            font-weight: 100;
+            text-align: right;
+
+            > * {
+                cursor: pointer;
+            }
+        }
+
+        .dialog_content {
+            box-shadow: $box-shadow;
+            -moz-box-shadow: $box-shadow;
+            -webkit-box-shadow: $box-shadow;
+            min-width: $width-dialog-min;
+            min-height: $height-dialog-min; // 104px
+            border-radius: $border-radius;
+
+            .dialog_body {
+                max-height: $height-dialog-max;
+                overflow: auto;
+            }
+        }
+    }
+
+    .dialog_panel_right {
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        text-align: left;
+        transform: $transform-dialog-translate-hide-right-panel;
+        transition: $transition-transform-slow;
+
+        .dialog_content {
+            box-shadow: $box-shadow;
+            -moz-box-shadow: $box-shadow;
+            -webkit-box-shadow: $box-shadow;
+            height: 100%;
+            min-width: $width-dialog-min;
+            overflow: auto;
+            border-radius: $border-radius 0 0 $border-radius;
+            // min-height: $height-dialog-min; // 104px*/
+        }
+    }
+
+    .dialog_panel_bottom {
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        text-align: left;
+        transform: $transform-dialog-translate-hide-bottom-panel;
+        transition: $transition-transform-slow;
+
+
+        .dialog_content {
+            box-shadow: $box-shadow-top;
+            -moz-box-shadow: $box-shadow-top;
+            -webkit-box-shadow: $box-shadow-top;
+            width: 100%;
+            min-height: $height-dialog-min;
+            overflow: auto;
+            border-radius: $border-radius $border-radius 0 0;
+            // min-height: $height-dialog-min; // 104px*/
+        }
+    }
+
+    &.dialog_overlay_show {
+        visibility: visible;
+        transition: none; /*Именно так, чтобы при открытии сразу overlay, а вот при закрытии уже после 0.3s*/
+        opacity: 1;
+
+        .dialog {
+            transform: $transform-dialog-translate-show;
+            transition: $transition-transform-slow;
+        }
+
+        .dialog_panel_right {
+            transform: $transform-dialog-translate-show-right-panel;
+            transition: $transition-transform-slow;
+        }
+
+        .dialog_panel_bottom {
+            transform: $transform-dialog-translate-show-bottom-panel;
+            transition: $transition-transform-slow;
+        }
+    }
+
+    &.dialog_overlay_loading {
+        background: $shadow-color1;
+        transition: none; /*При закрытии сразу overlay убирался*/
+        .dialog {
+            min-width: $grid * 12; // 96px;
+            margin-top: 45vh;
+            transition: none;
+            transform: $transform-scale-hide;
+
+            > div {
+                text-align: center;
+                color: $color-light;
+                background-color: $color-main1;
+                padding: $padding-half;
+                box-shadow: $box-shadow;
+                -moz-box-shadow: $box-shadow;
+                -webkit-box-shadow: $box-shadow;
+                border-radius: $border-radius;
+            }
+        }
+
+        &.dialog_overlay_show {
+            transition: none;
+            transition-property: opacity;
+            transition-delay: $transition-loading-delay;
+        }
+
+        &.dialog_overlay_show .dialog {
+            transform: $transform-scale-show;
+            transition: $transition-transform-slow;
+            transition-delay: $transition-loading-delay;
+        }
+    }
+
+    &.dialog_overlay_local {
+        position: absolute;
+
+
+        .dialog {
+            position: absolute;
+            margin-top: $margin-dialog;
+        }
+    }
+}
+
+
+

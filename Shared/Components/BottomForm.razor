@@ -1,0 +1,172 @@
+@inject IJSRuntime JSRuntime;
+
+<div class="dialog_overlay @(ShowDialog ? "dialog_overlay_show" : string.Empty)"
+@ontouchstart="OnTouchStart" @ontouchmove="OnTouchMove" @ontouchend="OnTouchEnd"
+@onmouseup="OnMouseUp" @onmousemove="OnMouseMove" @onmousedown="OnMouseDown"
+@ontouchstart:stopPropagation @ontouchmove:stopPropagation @ontouchend:stopPropagation
+@onmouseup:stopPropagation @onmousemove:stopPropagation @onmousedown:stopPropagation>
+    <div class="dialog_panel_bottom" @ref="_innerPanel" style="@_panelStyle">
+        <div class="dialog_content panel_light" style="max-height: @(_maxHeight)vh;">
+            <div class="_bootom_form_fixed_top" @onmouseup="OnMouseUpInner" @ontouchend="OnTouchEndInner">
+                <div class="content_body panel_light">
+                    <div class="strip_form"></div>
+                </div>
+            </div>
+            @*contnet_body - нужен, чтобы внутри row корректно работал*@
+
+            <div class="content_body no_overflow" style="padding-top:40px;" @onmouseup:stopPropagation @ontouchstart:stopPropagation @ontouchmove:stopPropagation @onmousemove:stopPropagation @onmousedown:stopPropagation @ontouchend:stopPropagation>
+                @*Показываем внутренности, только если окно открыто, иначе не зачем расходовать ресурсы*@
+                @if (ShowDialog)
+                {
+                    @*Перенёс сюда, чтобы отрабатывало условие выше*@
+                    <RenderContent @ref="_content">
+                        @Body
+                    </RenderContent>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    private RenderContent _content;
+    private ElementReference _innerPanel;
+    private bool _mouseDown = false;
+    private bool _mouseMove = false;
+    private string _panelStyle;
+    private double _currentOffset;
+    private int _maxHeight;
+
+    [Parameter]
+    public bool ShowDialog { get; set; }
+
+    [Parameter]
+    public RenderFragment Body { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+    private string _emptypanelStyle;
+    private string _movepanelStyle;
+
+    protected override void OnInitialized()
+    {
+        _maxHeight = DeviceInfo.Platform == DevicePlatform.iOS ? 80 : 90;
+        _emptypanelStyle = "";
+        _movepanelStyle = "transform:translateY({0}px);transition-duration:0s;";
+        _panelStyle = _emptypanelStyle;
+        base.OnInitialized();
+    }
+
+    private void _beginTouch(double offset)
+    {
+        _mouseDown = true;
+        _currentOffset = offset;
+    }
+
+    private void _moveTouch(double offset)
+    {
+        if (_mouseDown)
+        {
+            _mouseMove = true;
+            var translate = (int)(offset - _currentOffset);
+            if (translate > 0)
+                _panelStyle = string.Format(_movepanelStyle, translate);
+        }
+    }
+    private async Task<bool> _endTouch(double offset, bool closeOnClick)
+    {
+        var tempMove = _mouseMove;
+        var tempOffset = _currentOffset;
+
+        _content.StartChildRender();
+        _currentOffset = 0;
+        _panelStyle = _emptypanelStyle;
+
+        _mouseMove = false;
+
+        if (_mouseDown)
+        {
+            _mouseDown = false;
+
+            if (closeOnClick && !tempMove)
+                return true;
+
+            var c = await JSRuntime.GetBoundingClientRect(_innerPanel);
+
+            return tempMove && (offset - tempOffset) > c.Height / 2;
+        }
+
+        return false;
+    }
+    //Так сложно, т.к. просто mouseup - нельзя, а при mousedown - элементы уничтожаются, до потери фокуса, и тем самым валятся ошибки в blazor
+    private void OnMouseDown(MouseEventArgs e)
+    {
+        _beginTouch(e.ClientY);
+        _content.PreventChildRender();
+    }
+    private void OnTouchStart(TouchEventArgs e)
+    {
+        _content.PreventChildRender();
+        if (e.ChangedTouches.Length > 0)
+        {
+            var touch = e.Touches[0];
+            _beginTouch(touch.PageY);
+        }
+    }
+    private void OnMouseMove(MouseEventArgs e)
+    {
+        _content.PreventChildRender();
+        _moveTouch(e.ClientY);
+    }
+    private void OnTouchMove(TouchEventArgs e)
+    {
+        _content.PreventChildRender();
+        if (e.ChangedTouches.Length > 0)
+        {
+            var touch = e.Touches[0];
+            _moveTouch(touch.PageY);
+        }
+    }
+    private async Task OnMouseUp(MouseEventArgs e)
+    {
+        _content.PreventChildRender();
+        if (await _endTouch(e.ClientY, true) && OnClose.HasDelegate)
+            await OnClose.InvokeAsync(null);
+        _content.PreventChildRender();
+    }
+    private async Task OnTouchEnd(TouchEventArgs e)
+    {
+        _content.PreventChildRender();
+        if (e.ChangedTouches.Length > 0)
+        {
+            var touch = e.ChangedTouches[0];
+            if (await _endTouch(touch.PageY, true) && OnClose.HasDelegate)
+                await OnClose.InvokeAsync(null);
+        }
+        _content.PreventChildRender();
+    }
+    private async Task OnCloseClick(MouseEventArgs e)
+    {
+        await OnClose.InvokeAsync(null);
+    }
+    private async Task OnMouseUpInner(MouseEventArgs e)
+    {
+        _content.PreventChildRender();
+        if (await _endTouch(e.ClientY, false) && OnClose.HasDelegate)
+            await OnClose.InvokeAsync(null);
+        _content.PreventChildRender();
+    }
+
+    private async Task OnTouchEndInner(TouchEventArgs e)
+    {
+        _content.PreventChildRender();
+        if (e.ChangedTouches.Length > 0)
+        {
+            var touch = e.ChangedTouches[0];
+            if (await _endTouch(touch.PageY, false) && OnClose.HasDelegate)
+                await OnClose.InvokeAsync(null);
+        }
+        _content.PreventChildRender();
+    }
+}

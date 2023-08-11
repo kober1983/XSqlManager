@@ -1,0 +1,444 @@
+﻿@import 'init.scss';
+@import '../css/init.scss';
+
+html, body {
+    height: 100%;
+}
+
+.main_layout {
+    background: $color-background;
+    height: 100%;
+    overflow: auto;
+}
+
+.preload * { //Нужно поместить на body, чтобы не отрабатывали анимации при загрузке
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -ms-transition: none !important;
+    -o-transition: none !important;
+}
+
+[v-cloak] {
+    display: none !important;
+}
+
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin: -$margin;
+    padding: $padding-half;
+}
+
+.col_1, .col_2, .col_3, .col_4, .col_5, .col_6, .col_7, .col_8, .col_9, .col_10, .col_11, .col_12, .col, .col_auto {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding: $padding-half;
+}
+
+.col {
+    -ms-flex-preferred-size: 0;
+    flex-basis: 0;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    max-width: 100%;
+}
+
+.col_auto {
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+}
+
+.col_1 {
+    -ms-flex: 0 0 8.333333%;
+    flex: 0 0 8.333333%;
+    max-width: 8.333333%;
+}
+
+.col_2 {
+    -ms-flex: 0 0 16.666667%;
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%;
+}
+
+.col_3 {
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    max-width: 25%;
+}
+
+.col_4 {
+    -ms-flex: 0 0 33.333333%;
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+}
+
+.col_5 {
+    -ms-flex: 0 0 41.666667%;
+    flex: 0 0 41.666667%;
+    max-width: 41.666667%;
+}
+
+.col_6 {
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.col_7 {
+    -ms-flex: 0 0 58.333333%;
+    flex: 0 0 58.333333%;
+    max-width: 58.333333%;
+}
+
+.col_8 {
+    -ms-flex: 0 0 66.666667%;
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+}
+
+.col_9 {
+    -ms-flex: 0 0 75%;
+    flex: 0 0 75%;
+    max-width: 75%;
+}
+
+.col_10 {
+    -ms-flex: 0 0 83.333333%;
+    flex: 0 0 83.333333%;
+    max-width: 83.333333%;
+}
+
+.col_11 {
+    -ms-flex: 0 0 91.666667%;
+    flex: 0 0 91.666667%;
+    max-width: 91.666667%;
+}
+
+.col_12 {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+.order-1 {
+    -ms-flex-order: 1;
+    order: 1;
+}
+
+.order-2 {
+    -ms-flex-order: 2;
+    order: 2;
+}
+
+.order-3 {
+    -ms-flex-order: 3;
+    order: 3;
+}
+
+.order-4 {
+    -ms-flex-order: 4;
+    order: 4;
+}
+
+.order-5 {
+    -ms-flex-order: 5;
+    order: 5;
+}
+
+.order-6 {
+    -ms-flex-order: 6;
+    order: 6;
+}
+
+.order-7 {
+    -ms-flex-order: 7;
+    order: 7;
+}
+
+.order-8 {
+    -ms-flex-order: 8;
+    order: 8;
+}
+
+.order-9 {
+    -ms-flex-order: 9;
+    order: 9;
+}
+
+.order-10 {
+    -ms-flex-order: 10;
+    order: 10;
+}
+
+.order-11 {
+    -ms-flex-order: 11;
+    order: 11;
+}
+
+.order-12 {
+    -ms-flex-order: 12;
+    order: 12;
+}
+
+
+.container {
+    height: 100%;
+    width: 100%;
+}
+
+.content_header, .content_body, .content_footer {
+    padding: $padding;
+
+    &.scrolable {
+        overflow: auto;
+    }
+}
+
+.content_header_small, .content_body_small, .content_footer_small {
+    padding: $padding-half;
+
+    &.scrolable {
+        overflow: auto;
+    }
+}
+
+.content_header_smallest, .content_body_smallest, .content_footer_smallest {
+    padding: $padding-fourth;
+
+    &.scrolable {
+        overflow: auto;
+    }
+}
+
+.sticky_header {
+    position: sticky;
+    top: 0;
+    z-index: $z-index;
+}
+
+.panel_light {
+    background-color: $color-light;
+    border-radius: $border-radius;
+}
+
+.panel_light_alt {
+    background-color: $color-alternate-light;
+    border-radius: $border-radius;
+}
+
+.panel_highlight {
+    background-color: $color-main2;
+    border-radius: $border-radius;
+    color: $color-light;
+}
+
+.panel_process {
+    background-color: $color-process;
+    border-radius: $border-radius;
+    color: $color-light;
+}
+
+.panel_success {
+    background-color: $color-success;
+    border-radius: $border-radius;
+    color: $color-light;
+}
+
+.panel_error {
+    background-color: $color-error;
+    border-radius: $border-radius;
+    color: $color-light;
+}
+
+.panel_warning {
+    background-color: $color-warning;
+    border-radius: $border-radius;
+    color: $color-light;
+}
+
+.panel_in_progress {
+    background-color: $color-in-progress;
+    border-radius: $border-radius;
+    color: $color-light;
+}
+
+.separate_bottom {
+    border-bottom: $border-active $color-control-border;
+}
+
+.separate_top {
+    border-top: $border-active $color-control-border;
+}
+
+.separate_left {
+    border-left: $border-active $color-control-border;
+}
+
+.separate_right {
+    border-right: $border-active $color-control-border;
+}
+
+.separate_bottom_light {
+    border-bottom: $border $color-control-border;
+}
+
+.separate_top_light {
+    border-top: $border $color-control-border;
+}
+
+.separate_left_light {
+    border-left: $border $color-control-border;
+}
+
+.separate_righ_lightt {
+    border-right: $border $color-control-border;
+}
+
+.card_alt {
+    border-left: $border-card $color-alternate-light;
+}
+
+.card_highlight {
+    border-left: $border-card $color-main2;
+}
+
+.card_process {
+    border-left: $border-card $color-process;
+}
+
+.card_success {
+    border-left: $border-card $color-success;
+}
+
+.card_error {
+    border-left: $border-card $color-error;
+}
+
+.card_in_progress {
+    border-left: $border-card $color-in-progress;
+}
+
+.block_alt {
+    border: $border-card-dash $color-alternate-light;
+    border-radius: $border-radius;
+}
+
+.block_highlight {
+    border: $border-card-dash $color-main2;
+    border-radius: $border-radius;
+}
+
+.block_process {
+    border: $border-card-dash $color-process;
+    border-radius: $border-radius;
+}
+
+.block_success {
+    border: $border-card-dash $color-success;
+    border-radius: $border-radius;
+}
+
+.block_error {
+    border: $border-card-dash $color-error;
+    border-radius: $border-radius;
+}
+
+.block_in_progress {
+    border: $border-card-dash $color-in-progress;
+    border-radius: $border-radius;
+}
+
+.indent {
+    margin-top: $margin;
+}
+
+.indent_half {
+    margin-top: $margin/2;
+}
+
+.indent_double {
+    margin-top: $margin*2;
+}
+
+.indent_bottom {
+    margin-bottom: $margin;
+}
+
+.indent_half_bottom {
+    margin-bottom: $margin/2;
+}
+
+.indent_double_bottom {
+    margin-bottom: $margin*2;
+}
+
+.indent_right {
+    margin-right: $margin;
+}
+
+.indent_left {
+    margin-left: $margin;
+}
+
+.align_right {
+    text-align: right;
+}
+
+.align_left {
+    text-align: left;
+}
+
+.align_center {
+    text-align: center;
+}
+
+.float_left {
+    float: left;
+}
+
+.float_right {
+    float: right;
+}
+
+.float_clear {
+    clear: both;
+}
+
+.text_highlight {
+    color: $color-main2;
+}
+
+.text_success {
+    color: $color-success;
+}
+
+.text_process {
+    color: $color-process;
+}
+
+.text_error {
+    color: $color-error;
+}
+
+.text_description {
+    color: $color-text-disabled;
+}
+
+.text_in_progress {
+    color: $color-in-progress;
+}
+
+.text_warning {
+    color: $color-warning;
+}
+
+.text_no_overflow {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

@@ -1,0 +1,34 @@
+﻿@ChildContent
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public string Name { get; set; }
+
+    private bool _childRender = true;
+    private bool _preventRender = false;
+
+    public void StopChildRender()
+    {
+        _childRender = false;
+    }
+    public void StartChildRender()
+    {
+        _childRender = true;
+    }
+    public void PreventChildRender()
+    {
+        _preventRender = true;
+    }
+    protected override bool ShouldRender()
+    {
+        if (_preventRender)
+        {
+            _preventRender = false;
+            return false;
+        }
+        else
+            return _childRender;
+    }
+}

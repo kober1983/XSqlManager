@@ -1,0 +1,383 @@
+﻿@import 'init.scss';
+@import '../css/init.scss';
+
+a {
+    cursor: pointer;
+    transition: $transition;
+    text-decoration: none;
+    color: $color-main2;
+    outline: none;
+
+    &:hover {
+        color: $color-main1;
+        text-decoration: underline;
+    }
+
+    &.selected {
+        color: $color-dark;
+        font-weight: $font-weight-bold;
+    }
+
+    &.selected:hover {
+        text-decoration: none;
+    }
+}
+
+
+.link_script {
+    &:hover {
+        text-decoration: none;
+        border-bottom: 1px dashed $color-main1;
+    }
+}
+
+/*Кнопки*/
+a.button:hover {
+    text-decoration: none;
+}
+
+button, input, textarea, select, .button {
+    outline: none;
+}
+
+button, input[type=submit], input[type=button], .button {
+    display: inline-block;
+    padding: 0 $padding;
+    cursor: pointer;
+    text-decoration: none;
+    color: $color-dark;
+    border: $border;
+    border-color: transparent;
+    position: relative;
+    border-radius: $border-radius;
+    font-size: $font-size;
+    font-weight: $font-weight-medium;
+    transition: $transition;
+    background: $color-control-background;
+    /* line-height: $height-control-line;*/
+    height: $height-control-line;
+    vertical-align: middle; //Обязательно иначе в IE кнопка и input на разной высоте
+    white-space: nowrap;
+
+    &:not([disabled]):hover {
+        color: $color-main1;
+        background-color: $color-control-background-hover;
+        box-shadow: $box-shadow-control-focus;
+        -moz-box-shadow: $box-shadow-control-focus;
+        -webkit-box-shadow: $box-shadow-control-focus;
+        border-color: $color-main3;
+    }
+
+    &:focus {
+        color: $color-main2;
+        box-shadow: $box-shadow-control-focus;
+        -moz-box-shadow: $box-shadow-control-focus;
+        -webkit-box-shadow: $box-shadow-control-focus;
+        border-color: $color-main3;
+    }
+
+    &.button_active {
+        color: $color-light;
+        background: $color-main2;
+
+        &:hover {
+            color: $color-main3;
+            background-color: $color-main1;
+        }
+
+        &:focus {
+            color: $color-main3;
+        }
+    }
+
+    &.button_link {
+        background: none;
+        color: $color-main2;
+        padding: 0 $padding-half;
+
+        &:hover {
+            background: none;
+            box-shadow: $box-shadow-control-focus;
+            -moz-box-shadow: $box-shadow-control-focus;
+            -webkit-box-shadow: $box-shadow-control-focus;
+            border-color: $color-main3;
+        }
+
+
+        &[disabled] {
+            color: $color-text-disabled;
+            cursor: not-allowed;
+            background: none;
+        }
+    }
+
+    &.button_normal {
+        font-size: $font-size;
+        line-height: $height-control-line;
+        height: $height-control-line;
+    }
+
+    &.button_small {
+        font-size: $font-size;
+        line-height: $height-control-line-small;
+        height: $height-control-line-small;
+    }
+
+    &.button_selected {
+        background: $color-main3;
+        color: $color-dark;
+    }
+
+    &[disabled], &.button_active[disabled] {
+        color: $color-text-disabled;
+        cursor: not-allowed;
+        background: $color-control-disabled;
+    }
+}
+
+.touch:not(disabled) {
+    position: relative;
+    cursor: pointer;
+
+    &:after {
+        content: "";
+        background: $color-dark;
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        border-radius: $border-radius;
+        transition: none;
+    }
+
+    &:active:after {
+        opacity: 0.1;
+        transition: opacity .1s linear;
+        transition-delay: .05s;
+    }
+}
+
+/*input - Элементы формы*/
+.form_detail, .form_control {
+    padding: 0;
+    position: relative;
+    display: block;
+    width: 100%;
+
+
+    .input_header {
+        font-size: $font-size-small;
+        font-weight: $font-weight-medium;
+        color: $color-text-disabled;
+        display: block;
+        padding: 0 0 $padding-half 0;
+    }
+}
+
+input[type=text], input[type=tel], input[type=date], input[type=datetime],
+input[type=datetime-local], input[type=email], input[type=file],
+input[type=number], input[type=password], input[type=time], select, textarea {
+    width: 100%;
+    margin: 0;
+    padding: 0 $padding-half;
+    resize: none;
+    text-align: inherit;
+    color: $color-dark;
+    border: $border $color-control-border;
+    border-radius: $border-radius;
+    background: $color-input-background;
+    outline: none;
+    font: inherit;
+    font-size: $font-size;
+    line-height: $height-control-line-small;
+    height: $height-control-line;
+    vertical-align: middle; //Обязательно иначе в IE кнопка и input на разной высоте
+    transition: $transition-quick; // border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    &:hover {
+        box-shadow: $box-shadow-control-hover;
+        -moz-box-shadow: $box-shadow-control-hover;
+        -webkit-box-shadow: $box-shadow-control-hover;
+    }
+
+    &:focus {
+        box-shadow: $box-shadow-control-focus;
+        -moz-box-shadow: $box-shadow-control-focus;
+        -webkit-box-shadow: $box-shadow-control-focus;
+        border-color: $color-control-focused-border;
+    }
+}
+
+input:read-only, textarea:read-only, textarea[readonly], input[readonly], input:disabled, textarea:disabled, textarea[disabled], input[disabled] {
+    /*background-color: $color-control-disabled;*/
+    color: $color-text-disabled;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+textarea {
+    height: auto;
+    line-height: $height-control-line-small;
+}
+
+select {
+    background: transparent no-repeat right center;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23ccc' stroke-linecap='round' stroke-linejoin='round' stroke-width='1' d='M4 8l4 4l4-4'/%3e%3c/svg%3e");
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    &::-ms-expand {
+        display: none;
+    }
+
+   /* &:focus {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }*/
+}
+
+
+
+input.error, textarea.error, select.error, input[app-error], textarea[app-error], select[app-error] {
+    border: $border $color-error;
+}
+
+.form_control {
+
+    .control_normal {
+        font-size: $font-size;
+        line-height: $height-control-line;
+        height: $height-control-line;
+    }
+
+    .control_small {
+        font-size: $font-size;
+        line-height: $height-control-line-small;
+        min-height: $height-control-line-small;
+    }
+}
+
+
+// Группа элементов форм
+.form_group {
+    .form_control {
+        float: left;
+        width: $height-control-line;
+
+        &:not(:first-child) {
+            margin-left: $margin;
+        }
+
+        &.sticked {
+            margin-left: 0;
+        }
+    }
+
+    &:after {
+        content: '';
+        display: block;
+        clear: both;
+    }
+}
+
+label {
+    cursor: pointer;
+    /*line-height: $height-control-line;*/
+    input[type="file"] {
+        display: none;
+    }
+
+    > input[type="checkbox"],
+    > input[type="radio"] {
+        /* position: absolute;
+        left: -$grid*4;*/
+        display: none;
+    }
+
+    > input[type="checkbox"] + span:before, > input[type="radio"] + span:before {
+        display: inline-block;
+        width: $grid * 2.5;
+        height: $grid * 2.5;
+        margin-right: $grid;
+        content: "";
+        vertical-align: middle;
+        background-repeat: no-repeat;
+        border: $border $color-control-border;
+    }
+
+    > input[type="checkbox"] + span:before {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+        border-radius: $border-radius;
+    }
+
+    > input[type="radio"] + span:before {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+        border-radius: 50%;
+    }
+
+    > input[type="checkbox"]:checked + span::before,
+    > input[type="radio"]:checked + span::before {
+        background-color: $color-main2;
+        border: $border $color-control-focused-border;
+    }
+
+    > input[type="checkbox"]:checked:disabled + span::before,
+    > input[type="radio"]:checked:disabled + span::before {
+        background-color: $color-main3;
+        border: $border $color-main3;
+    }
+
+
+    > input[type="checkbox"]:focus + span::before,
+    > input[type="radio"]:focus + span::before,
+    > input[type="checkbox"]:not(:disabled):checked + span:hover::before,
+    > input[type="radio"]:not(:disabled):checked + span:hover::before {
+        box-shadow: $box-shadow-control-focus;
+        -moz-box-shadow: $box-shadow-control-focus;
+        -webkit-box-shadow: $box-shadow-control-focus;
+        border: $border $color-control-focused-border;
+    }
+    /*> input[type="checkbox"]:disabled + span::before {
+        background-color: gray;
+    }*/
+
+
+
+    > input[type="checkbox"]:not(:checked):not(:focus):not(:disabled) + span:hover::before,
+    > input[type="radio"]:not(:checked):not(:focus):not(:disabled) + span:hover::before {
+        box-shadow: $box-shadow-control-hover;
+        -moz-box-shadow: $box-shadow-control-hover;
+        -webkit-box-shadow: $box-shadow-control-hover;
+    }
+}
+
+/*Error*/
+div.error, div[app-error] {
+    color: $color-error;
+    font-size: $font-size-small;
+    padding: $padding-half 0 0 0;
+}
+
+tr.error, tr[app-error] {
+    color: $color-error;
+}
+
+/*Уберает кнопку "очистить (крест)", которая не работает, в input'ах в IExplorer и Edge*/
+input::-ms-clear {
+    display: none;
+}

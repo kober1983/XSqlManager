@@ -1,0 +1,106 @@
+﻿@charset "UTF-8";
+/* Colors */
+/* Colors */
+/*Рамки*/
+/*Сетка, margin, padding*/
+/*Шрифт*/
+/* Transitions */
+/* Transform */
+/* Colors */
+/* Colors */
+/*Рамки*/
+/*Сетка, margin, padding*/
+/*Шрифт*/
+/* Transitions */
+/* Transform */
+.layout_wrapper {
+  min-height: 100vh;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: column;
+  flex-flow: column;
+  background: #eee;
+}
+.layout_wrapper > .layout_footer, .layout_wrapper > .layout_header, .layout_wrapper > .layout_user_header {
+  -ms-flex: 0 auto;
+  flex: 0 auto;
+  padding: 16px;
+}
+.layout_wrapper > .layout_content {
+  /*-ms-flex: 1 100%;        flex: 1 100%; в IE -11 не работает - всё едет*/
+  min-height: 80vh;
+}
+.layout_wrapper .layout_user_header {
+  background: #420A68;
+  color: #fefefe;
+  padding: 4px;
+  padding-right: 16px;
+}
+.layout_wrapper .layout_user_header a {
+  color: #fefefe;
+  border-color: #fefefe;
+}
+.layout_wrapper .layout_user_header a.link_script:hover {
+  text-decoration: none;
+  border-bottom: 1px dashed #fefefe;
+}
+.layout_wrapper .layout_header {
+  background: #7C13BF;
+  color: #fefefe;
+  padding: 0 16px;
+  line-height: 64px;
+  height: 64px;
+}
+.layout_wrapper .layout_header .menu.horizontal.layout_menu {
+  width: 100%;
+}
+.layout_wrapper .layout_header .menu.horizontal.layout_menu li {
+  text-align: center;
+}
+.layout_wrapper .layout_header .menu.horizontal.layout_menu li > a {
+  color: #BD7BED;
+  padding: 0 16px;
+  font-size: 21.49999995px;
+  font-weight: 700;
+  white-space: nowrap;
+  /* Отменяем перенос текста */
+  overflow: hidden;
+  /* Обрезаем содержимое */
+  text-overflow: ellipsis;
+  /* Многоточие */
+}
+.layout_wrapper .layout_header .menu.horizontal.layout_menu li > a:hover {
+  color: #fefefe;
+  box-shadow: none;
+  background: #8b15d6;
+}
+.layout_wrapper .layout_header .menu.horizontal.layout_menu li a.selected {
+  color: #fefefe;
+  background: #420A68;
+}
+.layout_wrapper .layout_header a.logo {
+  color: #fefefe;
+  text-decoration: none;
+  line-height: 64px;
+  vertical-align: central;
+  font-size: 24.49999995px;
+}
+.layout_wrapper .layout_content {
+  padding: 16px;
+}
+.layout_wrapper .layout_content ul.menu.layout_menu {
+  /*margin-left: -$margin;
+  margin-right: -$margin;*/
+  font-size: 21.49999995px;
+}
+.layout_wrapper .layout_content ul.menu.layout_menu > li:not(:first-child) {
+  margin-top: 8px;
+}
+.layout_wrapper .layout_content ul.menu.layout_menu > li > a {
+  padding: 8px 16px 8px 16px;
+  font-weight: 700;
+  color: #272D2D;
+}
+.layout_wrapper .layout_content ul.menu.layout_menu > li a.selected {
+  background: #BD7BED;
+}

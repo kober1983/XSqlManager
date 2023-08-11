@@ -1,0 +1,26 @@
+﻿<div class="dialog_overlay @(ShowDialog ? "dialog_overlay_show" : string.Empty)">
+    <div class="dialog" @onmousedown:stopPropagation @ontouchend:stopPropagation>
+        <div class="panel_light content_body dialog_content">
+            <div class="dialog_body" style="@(FullSize ? "min-height: 90vh;" : "max-height: 85vh;")">
+                @if (ShowDialog)
+                {
+                    <RenderContent>
+                        <Body>
+                            @Body
+                        </Body>
+                    </RenderContent>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public RenderFragment Body { get; set; }
+
+    [Parameter]
+    public bool ShowDialog { get; set; }
+
+    [Parameter]
+    public bool FullSize { get; set; }
+}

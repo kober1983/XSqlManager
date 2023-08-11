@@ -1,0 +1,67 @@
+﻿@page "/"
+@inject ConnectionState _connectionState
+<div class="content_body">
+    <div class="panel_light">
+
+        @foreach (var c in _connectionState?.Connections)
+        {
+            <div class="touch content_body">
+                <div> @c.Server </div>
+            </div>
+        }
+        <div class="touch content_body" @onclick="onclick">
+            Добавить сервер
+        </div>
+
+        <h1>Hello, world!</h1>
+
+        Welcome to your new app.
+
+        <button class="button_active"> Привет</button>
+    </div>
+</div>
+<BottomForm ShowDialog="@(_currentConnection!=null)" OnClose="onCLoseForm">
+    <Body>
+        <div class="content_body">
+            <div class="form_control">
+                <input type="text" @bind="_currentConnection.Server" />
+            </div>
+            <div class="form_control">
+                <input type="text" @bind="_currentConnection.Name" />
+            </div>
+            <div class="form_control">
+                <input type="text" @bind="_currentConnection.User" />
+            </div>
+            <div class="form_control">
+                <input type="text" @bind="_currentConnection.Password" />
+            </div>
+            <div class="form_control">
+                <input type="text" @bind="_currentConnection.Database" />
+            </div>
+            <div class="form_control">
+                <input type="text" @bind="_currentConnection.Type" />
+            </div>
+            <div>
+                <button class="button_active" @onclick="_saveConnection">Save connection</button>
+            </div>
+        </div>
+    </Body>
+</BottomForm>
+@code {
+    protected Connection _currentConnection;
+    // protected ConnectionState _connectionState = new ConnectionState { };
+    public void onclick()
+    {
+        _currentConnection = new Connection { Id = Guid.NewGuid() };
+    }
+    public void onCLoseForm()
+    {
+        _currentConnection = null;
+    }
+    public void _saveConnection()
+    {
+        _connectionState.Connections.Add(_currentConnection);
+        _currentConnection = null;
+
+    }
+}

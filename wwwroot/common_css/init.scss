@@ -1,0 +1,101 @@
+﻿@import 'init_colors.scss';
+@import '../css/init_colors.scss';
+
+$color-background: #eee; //Задний фон сайта
+$color-dark: #272D2D; //Цвет текста на страницу (на светлом фоне), Цвет тёмного фона (footer)
+$color-light: #fefefe; //Цвет текста (на тёмном фоне), Цвет фона страниц
+$color-alternate-light: #f3f3f3; //Цвет фона выделенных блоков
+
+
+$color-input-background: #fff; //Фон элементов ввода
+$color-control-background: #E0E0E0; //Цвет кнопок
+$color-control-background-hover: #D0D0D0; //Цвет кнопок - hover
+$color-text-disabled: #bdbebe; //Цвет текста описания + неактивных элементов
+$color-control-disabled: #EaEaEa; //Цвет неактивных
+$color-control-border: #ededed;
+$color-control-focused-border: $color-main3;
+
+$color-in-progress: #E0CB6D; //Желтый - в процессе
+$color-warning: #FA5A2C; //Оранжевый - внимание
+$color-success: #5EB269; //Зелёный - успешная операция
+$color-process: #49ABD8; //Синий - операция
+$color-error: #FF0039; //Красный - ошибка
+
+//Тени
+$shadow-color1: rgba(0, 0, 0, 0.1);
+$shadow-color2: rgba(0, 0, 0, 0.3);
+$shadow-color3: rgba(0, 0, 0, 0.8);
+$box-shadow-control-focus: 0 0 0 0.2rem rgba($color-main3,.8);
+$box-shadow-control-hover: 0 0 0 0.2rem rgba($color-control-border,.8);
+$box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.2);
+$box-shadow-top: 0px -4px 4px 0px rgba(0,0,0,0.2);
+
+/*Рамки*/
+$border-thick: 1px;
+$border: $border-thick solid;
+$border-active: 2px solid;
+$border-card: 3px solid;
+$border-card-dash: 3px dashed;
+$border-radius: 0.25rem;
+
+/*Сетка, margin, padding*/
+$line-height: 1.2;
+$grid: 8px; //Сетка
+$height-control-line: $grid * 5; //Высота элемента управления
+$height-control-line-small: $grid * 3; //Высота элемента управления меньшего
+
+$height-dialog-min: $grid*24; //Минимальная высота всплыв. окна
+$height-dialog-max: calc(90vh - #{$grid*22});//Максимакльная высота всплыв. окна (высота динамической части - высота статической части (отступ, заголовок и футер)
+$width-dialog-min: $grid*34; //Мин. ширина всплыв. окна
+
+$margin: $grid * 2;
+$margin-fourth: $margin/4;
+$margin-half: $margin / 2;
+$margin-double: $margin * 2;
+$margin-triple: $margin * 3;
+$margin-quad: $margin * 4;
+$margin-dialog: $margin *2;
+
+$padding: $grid * 2;
+$padding-fourth: $padding/4;
+$padding-half: $padding / 2;
+$padding-double: $padding * 2;
+$padding-triple: $padding * 3;
+$padding-quad: $padding * 4;
+
+/*Шрифт*/
+$font-weight-bold: 700;
+$font-weight-medium: 500;
+$font-weight-normal: 400;
+$font-weight-thin: 100;
+$font-size: 15px;
+$font-size-h1: $font-size * 3;
+$font-size-h2: $font-size * 2.00000000;
+$font-size-h3: $font-size * 1.63333333;
+$font-size-h4: $font-size * 1.43333333;
+$font-size-h5: $font-size * 1.23333333;
+$font-size-h6: $font-size * 1.13333333;
+$font-size-small: $font-size * 0.8666667;
+$font-size-smallest: $font-size * 0.73333333;
+
+/* Transitions */
+$transition-loading-delay: .2s; //Задержка при показе анимации,
+$transition-param: .4s ease-in-out;
+$transition: all $transition-param;
+$transition-quick: all .15s ease-in-out;
+$transition-transform-quick: transform .1s ease;
+$transition-transform-slow: transform .5s ease;
+
+/* Transform */
+$transform-scale-hide: scale(0,0);
+$transform-scale-show: scale(1,1);
+$transform-dialog-translate-hide: translateY(-($height-dialog-min+$margin-dialog));
+$transform-dialog-translate-show: translateY(0px);
+$transform-dialog-translate-show-right-panel: translateX(0px);
+$transform-dialog-translate-hide-right-panel: translateX(400px);
+$transform-dialog-translate-show-bottom-panel: translateY(0px);
+$transform-dialog-translate-hide-bottom-panel: translateY(100vh);
+$transform-scale-hide-Y: scale(1,0);
+$transform-scale-show-Y: scale(1,1);
+
+$z-index: 100;

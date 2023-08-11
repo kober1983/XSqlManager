@@ -1,0 +1,369 @@
+﻿@import '../common_css/init.scss';
+@import 'init.scss';
+$height-header: 64px; //Высота заголовка
+$header-background: $color-main2;
+$header-background-hover: lighten($color-main2, 5%);
+
+$color-attention: #FF865E;
+$color-need-work: #C2A6DB;
+$color-almost-success: #708970; //Темно - зелёный - почти успешная операция
+$color-dark-error: #C65757; //Темно - краный - почти успешная операция
+$color-info: #FFFEE0;
+$color-info-border: #DBDAC0;
+$border-info: $border-thick dashed $color-info-border;
+$color-light-disabled: #D3D3D3;
+
+#blazor-error-ui {
+    display: none;
+}
+
+body {
+    background: $color-background;
+}
+
+.login_wrapper {
+    background: $color-main1;
+    height: 100vh;
+
+    h1 {
+        color: $color-light;
+    }
+}
+
+#app {
+    overflow: auto;
+    height: 100%;
+}
+
+.layout_header {
+    background: $color-main2;
+    padding: 0;
+    position: relative; //чтобы button  position: absolute; корректно работало
+    line-height: $height-header;
+    height: $height-header;
+
+    .menu.horizontal.layout_menu {
+        width: 100%;
+
+        li {
+            text-align: center;
+
+            > a {
+                color: $color-main3;
+                padding: 0 $padding;
+                font-size: $font-size-h4;
+                font-weight: $font-weight-normal;
+                white-space: nowrap; // Отменяем перенос текста
+                overflow: hidden; //                Обрезаем содержимое
+                text-overflow: ellipsis;
+                border: none;
+
+                &:hover {
+                    //  background: $color-main3;
+                    color: $color-light;
+                    box-shadow: none;
+                    background: $header-background-hover;
+                }
+            }
+
+            a.selected {
+                color: $color-light;
+                background: $color-main1;
+            }
+        }
+    }
+
+    > div {
+        display: inline-block;
+    }
+
+    .button {
+        color: $color-light;
+        position: absolute;
+        top: $grid*2.5;
+        right: $grid*3;
+    }
+}
+
+.layout_body {
+}
+
+
+.no_round {
+    border-radius: 0;
+}
+
+.no_overflow {
+    overflow: hidden;
+}
+
+.text_icon {
+    font-size: $font-size-h3;
+}
+
+.block_info {
+    border-radius: $border-radius;
+    color: $color-block-info-font;
+    background: $color-block-info-background;
+    border: $border-card-dash $color-block-info-border;
+}
+
+.block_error {
+    border-radius: $border-radius;
+    color: $color-block-error-font;
+    background: $color-block-error-background;
+    border: $border-card-dash $color-block-error-border;
+}
+
+.block_success {
+    border-radius: $border-radius;
+    color: $color-block-success-font;
+    background: $color-block-success-background;
+    border: $border-card-dash $color-block-success-border;
+}
+
+.panel_success_light {
+    background-color: $color-block-success-background;
+    border-radius: $border-radius;
+    color: $color-block-success-font;
+}
+
+.panel_error_light {
+    background-color: $color-block-error-background;
+    border-radius: $border-radius;
+    color: $color-block-error-font;
+}
+
+.panel_process_light {
+    background-color: $color-block-process-background;
+    border-radius: $border-radius;
+    color: $color-block-process-font;
+}
+
+.dialog_edit_form {
+    border-radius: $border-radius;
+    background: $color-light;
+    border: $border-card-dash $color-success;
+    position: fixed;
+    z-index: 20000;
+    box-shadow: $box-shadow;
+}
+
+/*Прогресс бар*/
+.progressbar {
+    height: $grid; // 4px
+    background: $color-main3;
+    /* margin-top: $grid / 2; // 4px*/
+    border-radius: $border-radius;
+
+    > div {
+        height: 100%;
+        background: $color-main1;
+        border-radius: $border-radius;
+        //line-height: $grid*2;
+        color: $color-light;
+        padding-left: $grid;
+    }
+
+    &.progressbar_success {
+        background: $color-progress-success-background;
+
+        > div {
+            background: $color-progress-success-active;
+        }
+    }
+
+    &.progressbar_error {
+        background: $color-progress-error-background;
+
+        > div {
+            background: $color-progress-error-active;
+        }
+    }
+
+    > div.progressbar_success {
+        background: $color-progress-success-active;
+    }
+
+    > div.progressbar_error {
+        background: $color-progress-error-active;
+    }
+}
+
+.balloon_bottom {
+    margin-left: -$grid;
+    padding: 0px $grid/2 0px $grid/2;
+    font-size: 10px;
+}
+
+table.calendar {
+    display: inline-block;
+
+    th {
+        font-weight: bold;
+        padding: $grid;
+        text-align: center;
+    }
+
+    th.holiday_weekend_header {
+        color: $color-block-success-border;
+        font-weight: bold;
+    }
+
+    td {
+        padding: $grid/2;
+        text-align: center;
+    }
+
+    td.clickable:hover {
+        background: $color-alternate-light;
+        cursor: pointer;
+    }
+}
+//выходной
+.holiday_weekend {
+    color: $color-block-success-border;
+    background: $color-block-success-background;
+    font-weight: bold;
+}
+//отпуск
+.holiday_vacation {
+    color: $color-block-success-border;
+    background: $color-block-success-background;
+    font-weight: bold;
+}
+//holiday_approve
+.holiday_approve {
+    color: $color-block-success-border;
+    background: $color-block-success-background;
+    font-weight: bold;
+}
+//командировка
+.holiday_businesstrip {
+    color: $color-block-process-border;
+    background: $color-block-process-background;
+    font-weight: bold;
+}
+//отгул
+.holiday_timeof {
+    color: $color-block-warning-border;
+    background: $color-block-warning-background;
+    font-weight: bold;
+}
+
+//болезнь
+.holiday_disease {
+    color: $color-block-warning-border;
+    background: $color-block-warning-background;
+    font-weight: bold;
+}
+.holiday_other {
+    color: $color-error;
+    font-weight: bold;
+}
+
+
+
+tr.detail_row > td, tr.detail_row:hover > td {
+    border: $border-card $color-success;
+    border-top: none;
+
+    &:hover {
+        border: $border-card $color-success;
+        border-top: none;
+    }
+}
+
+table.timeline {
+    padding: 0;
+    border-spacing: 0px;
+
+    tbody > tr:hover > td {
+        border: none;
+    }
+
+    tbody td {
+        padding: 0;
+        background: red;
+        width: 48px;
+        height: 24px;
+        background: $color-block-error-border;
+        color: $color-light;
+        font-size: $font-size-smallest;
+        vertical-align: central;
+        border: none;
+
+        &:hover {
+            border: none;
+        }
+
+        > div {
+            height: 100%;
+            background: $color-success;
+            line-height: 24px;
+        }
+    }
+}
+
+[tooltip] {
+    position: relative;
+    cursor: pointer;
+    //Hide the tooltip content by default
+    &:before, &:after {
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+    }
+    //Position tooltip above the element
+    &:before {
+        position: absolute;
+        top: 100%;
+        left: -25px;
+        margin-top: $padding-half;
+        margin-left: -80px;
+        padding: $padding-half;
+        width: auto;
+        min-width: 200px;
+        border-radius: $border-radius;
+        background-color: $color-info;
+        border: $border-info;
+        opacity: 0.9;
+        color: $color-dark;
+        // background-color: hsla(0, 0%, 20%, 0.9);
+        // color: #fff;
+        content: attr(tooltip);
+        text-align: center;
+        font-size: $font-size;
+        font-weight: $font-weight-normal;
+        line-height: $line-height;
+        z-index: 10002;
+    }
+    //Triangle hack to make tooltip look like a speech bubble
+    &:after {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -$padding-half;
+        width: 0;
+        border-top: $padding-half solid $color-info-border;
+        border-right: $padding-half solid transparent;
+        border-left: $padding-half solid transparent;
+        border-bottom: $padding-half solid $color-info-border;
+        content: " ";
+        font-size: 0;
+        line-height: 0;
+    }
+    //    Show tooltip content on hover
+    &:hover:before, &:hover:after {
+        visibility: visible;
+        opacity: 0.9;
+    }
+
+    &.error_tooltip:before {
+        color: $color-error;
+    }
+
+    &.righttooltip:before {
+        color: $color-error;
+    }
+}
