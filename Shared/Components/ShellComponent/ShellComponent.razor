@@ -1,0 +1,246 @@
+﻿@{
+    <CascadingValue Name="ShellComponent" Value="@this" IsFixed>
+        @Pages
+    </CascadingValue>
+}
+
+@if (ShowTabContainer)
+{
+    <ul class="tab_navigation">
+        <CascadingValue Name="ShellComponent" Value="@this" IsFixed>
+         @Tabs
+     </CascadingValue>
+ </ul>
+}
+@code {
+    [Parameter]
+    public RenderFragment Tabs { get; set; }
+    [Parameter]
+    public RenderFragment Pages { get; set; }
+    [Parameter]
+    public bool ShowTabContainer { get; set; } = true;
+
+    public void SetShowTabContainer(bool showTab)
+    {
+        ShowTabContainer = showTab;
+    }
+    private Dictionary<string, TabNavigation> _tabItems = new Dictionary<string, TabNavigation>(StringComparer.OrdinalIgnoreCase);
+    private TabNavigation _currentTab;
+    internal bool CanGoBack = false;
+
+    //Для добавления табов из разметки
+    internal void _addTab(string tabRouteName)
+    {
+        var key = tabRouteName?.ToLower().Trim() ?? "";
+        if (key == "") return;
+        if (!_tabItems.ContainsKey(key))
+        {
+            if (_tabItems.Count == 0)
+            {
+                //устанавливаем активные табы
+                _currentTab = new TabNavigation
+                    {
+                        _isActive = true,
+                        _isRoot = true,
+                        _tabRouteName = tabRouteName,
+                    };
+                _tabItems.Add(key, _currentTab);
+            }
+            else
+            {
+                _tabItems.Add(key, new TabNavigation
+                    {
+                        _isActive = false,
+                        _isRoot = false,
+                        _tabRouteName = tabRouteName,
+                    });
+            }
+        }
+    }
+    //Для удаления табов из разметки
+    internal void _removeTab(string tabRouteName)
+    {
+        var key = tabRouteName?.ToLower().Trim() ?? "";
+        if (key == "") return;
+        if (_tabItems.ContainsKey(key))
+        {
+            _tabItems.Remove(key);
+            // StateHasChanged();
+        }
+    }
+    internal object _getParam(string tabRouteName, string routeName)
+    {
+        tabRouteName = tabRouteName?.ToLower().Trim() ?? "";
+        if (_tabItems.ContainsKey(tabRouteName))
+            return _tabItems[tabRouteName]._getParam(routeName);
+        return null;
+
+    }
+
+    internal bool _isHidden(string tabRouteName, string routeName)
+    {
+        tabRouteName = tabRouteName?.ToLower().Trim() ?? "";
+        var t = !(_tabItems.ContainsKey(tabRouteName) && _tabItems[tabRouteName]._isActive && _tabItems[tabRouteName]._isCurrent(routeName));
+        return t;
+    }
+    internal bool _isInStack(string tabRouteName, string routeName)
+    {
+        tabRouteName = tabRouteName?.ToLower().Trim() ?? "";
+        var t = (_tabItems.ContainsKey(tabRouteName) && (routeName == "" || _tabItems[tabRouteName]._inStack(routeName)));
+        return t;
+    }
+    internal string _activeTabCssClassName(string tabRouteName)
+    {
+        tabRouteName = tabRouteName?.ToLower().Trim() ?? "";
+        if (_tabItems.ContainsKey(tabRouteName) && _tabItems[tabRouteName]._isActive)
+            return "selected"; return "";
+    }
+    //Нужен в ShellTabItem для перехода таба
+    private void _changeTab(string key)
+    {
+        foreach (var k in _tabItems)
+        {
+            if (k.Key == key)
+            {
+                k.Value._isActive = true;
+                if (_currentTab == k.Value)
+                    _currentTab._clear();//
+                _currentTab = k.Value;
+            }
+            else
+            {
+                k.Value._isActive = false;
+            }
+        }
+
+    }
+    private void _goto(string pageRouteName, object param, bool replace = false)
+    {
+        if (!_currentTab._isCurrent(pageRouteName))
+            _currentTab._pushPage(pageRouteName, param);
+    }
+    internal bool GoBack()
+    {
+        var ret = true;
+        if (!_currentTab._popPage())//Если это первая страница в стеке таба
+        {
+            if (!_goToRoot())//Попробуем перейти к root странице
+            {
+                ret = false;//Если не перешли, то фактически перехода назад не было
+            }
+        }
+
+        CanGoBack = _currentTab._hasPages();
+        StateHasChanged();//Нужен здесь, т.к. событие происходит во внутреннем компоненте, а перерисовтаь надо этот
+        return ret;
+    }
+    internal void GoTo(string pageRouteName, object param, bool replace = false)
+    {
+        _goto(pageRouteName, param, replace);
+        CanGoBack = _currentTab._hasPages();
+        StateHasChanged();//Нужен здесь, т.к. событие происходит во внутреннем компоненте, а перерисовтаь надо этот
+    }
+    internal void GoTo(string tabRouteName, string pageRouteName, object param)
+    {
+        tabRouteName = tabRouteName?.ToLower().Trim() ?? "";
+        //if (_currentTab._tabRouteName != tabRouteName)
+        _changeTab(tabRouteName);//changetab делаем всегда, т.к. даже если я нахожусь на этом же табе и ещё раз нажимаю, то надо в начало прилетеь
+        _goto(pageRouteName, param);
+        CanGoBack = _currentTab._hasPages();
+        StateHasChanged();//Нужен здесь, т.к. событие происходит во внутреннем компоненте, а перерисовтаь надо этот
+    }
+
+    private bool _goToRoot()
+    {
+        var t = _currentTab;
+        foreach (var k in _tabItems.Values)
+        {
+            if (k._isRoot)
+            {
+                k._isActive = true;
+                _currentTab = k;
+            }
+            else
+            {
+                k._isActive = false;
+            }
+        }
+        return t != _currentTab;
+    }
+
+
+
+
+    internal class TabNavigation
+    {
+        internal string _tabRouteName { get; set; }
+        internal bool _isRoot;
+        internal bool _isActive;
+        private Stack<string> _stackPages = new Stack<string>();
+        private Dictionary<string, object> _hashPages = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+
+        private string _pageInTabRouteName = "";
+
+        internal object _getParam(string routeName)
+        {
+            routeName = routeName?.ToLower().Trim() ?? "";
+            return _hashPages.ContainsKey(routeName) ? _hashPages[routeName] : null;
+
+        }
+        internal bool _isCurrent(string routeName)
+        {
+            routeName = routeName?.ToLower().Trim() ?? "";
+            return _pageInTabRouteName == routeName;
+        }
+        internal bool _inStack(string routeName)
+        {
+            routeName = routeName?.ToLower().Trim() ?? "";
+            if (routeName == "") return false;
+
+            return _hashPages.ContainsKey(routeName);
+        }
+        internal void _pushPage(string routeName, object param = null, bool replace = false)
+        {
+            routeName = routeName?.ToLower().Trim() ?? "";
+            if (routeName == "") return;
+
+            if (replace)
+                _popPage();
+
+            _pageInTabRouteName = routeName;
+            if (_hashPages.ContainsKey(_pageInTabRouteName))
+            {
+                _hashPages[_pageInTabRouteName] = param;
+            }
+            else
+            {
+                _stackPages.Push(_pageInTabRouteName);
+                _hashPages.Add(_pageInTabRouteName, param);
+            }
+        }
+        internal void _clear()
+        {
+            _pageInTabRouteName = "";
+            _stackPages.Clear();
+            _hashPages.Clear();
+        }
+        internal bool _popPage()
+        {
+            if (_hashPages.Count > 0)
+            {
+                var page = _stackPages.Pop();
+                _hashPages.Remove(page);
+                if (_stackPages.Count > 0)
+                    _pageInTabRouteName = _stackPages.Peek();
+                else
+                    _pageInTabRouteName = "";
+                return true;
+            }
+            return false;
+        }
+        internal bool _hasPages()
+        {
+            return _stackPages.Count > 0;
+        }
+    }
+}

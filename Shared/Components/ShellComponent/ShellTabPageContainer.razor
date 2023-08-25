@@ -1,0 +1,25 @@
+﻿@if (ShellComponent._isInStack(TabRouteName, RouteName))
+{
+    @* @_noOverflowStyle() *@
+    <div class="navigation_container" hidden="@ShellComponent._isHidden(TabRouteName, RouteName)">
+        <CascadingValue Name="Param" Value="ShellComponent._getParam(TabRouteName, RouteName)">
+            <CascadingValue Name="CanGoBack" Value="@ShellComponent.CanGoBack">
+                @ChildContent
+            </CascadingValue>
+        </CascadingValue>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string RouteName { get; set; }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [CascadingParameter(Name = "ShellComponent")]
+    public ShellComponent ShellComponent { get; set; }
+    [CascadingParameter(Name = "TabRouteName")]
+    public string TabRouteName { get; set; }
+
+   
+    // private string _noOverflowStyle() => _isOpenForm ? "no_overflow" : "";
+}

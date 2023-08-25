@@ -1,0 +1,14 @@
+﻿<li>
+    <div class="touch @ShellComponent._activeTabCssClassName(TabRouteName)" @onclick="@(()=>ShellComponent.GoTo(TabRouteName,"",null))">
+        @ChildContent
+    </div>
+</li>
+
+@code {
+    [Parameter]
+    public string TabRouteName { get; set; }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [CascadingParameter(Name = "ShellComponent")]
+    public ShellComponent ShellComponent { get; set; }
+}

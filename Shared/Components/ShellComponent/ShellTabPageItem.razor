@@ -1,0 +1,22 @@
+﻿@implements IDisposable
+<CascadingValue Name="TabRouteName" Value="TabRouteName" IsFixed>
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public string TabRouteName { get; set; }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [CascadingParameter(Name = "ShellComponent")]
+    public ShellComponent ShellComponent { get; set; }
+
+    protected override void OnInitialized()//После инициализации пропишем себя в ShellComponent
+    {
+        ShellComponent._addTab(TabRouteName);
+    }
+    public void Dispose()//удалим себя из компонента
+    {
+        ShellComponent._removeTab(TabRouteName);
+    }
+}
