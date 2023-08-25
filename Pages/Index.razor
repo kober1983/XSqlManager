@@ -1,54 +1,66 @@
 ﻿@page "/"
 @inject ConnectionState _connectionState
 <div class="content_body">
-    <div class="panel_light">
+    <div class="panel_light content_body">
 
         @foreach (var c in _connectionState?.Connections)
         {
-            <div class="touch content_body">
-                <div> @c.Server </div>
+            <div class="indent">
+                <div class="touch content_body block_highlight" @onclick="_gotopage">
+                    <div> @c.Server </div>
+                </div>
             </div>
         }
-        <div class="touch content_body" @onclick="onclick">
+        <div class="touch content_body indent" @onclick="onclick">
             Добавить сервер
         </div>
 
         <h1>Hello, world!</h1>
 
         Welcome to your new app.
-
-        <button class="button_active"> Привет</button>
+        <Test testParam="@testStr"></Test>
+        <button class="button_active" @onclick="@(()=>testStr=$"t-{DateTime.Now}")"> Привет</button>
     </div>
 </div>
 <BottomForm ShowDialog="@(_currentConnection!=null)" OnClose="onCLoseForm">
     <Body>
         <div class="content_body">
             <div class="form_control">
-                <input type="text" @bind="_currentConnection.Server" />
+                <input type="text" @bind="_currentConnection.Server" placeholder="" />
             </div>
-            <div class="form_control">
+            <div class="form_control indent">
                 <input type="text" @bind="_currentConnection.Name" />
             </div>
-            <div class="form_control">
+            <div class="form_control indent">
                 <input type="text" @bind="_currentConnection.User" />
             </div>
-            <div class="form_control">
+            <div class="form_control indent">
                 <input type="text" @bind="_currentConnection.Password" />
             </div>
-            <div class="form_control">
+            <div class="form_control indent">
                 <input type="text" @bind="_currentConnection.Database" />
             </div>
-            <div class="form_control">
+            <div class="form_control indent">
                 <input type="text" @bind="_currentConnection.Type" />
             </div>
-            <div>
+            <div class="indent">
                 <button class="button_active" @onclick="_saveConnection">Save connection</button>
             </div>
         </div>
     </Body>
 </BottomForm>
 @code {
+    protected string testStr = "t1";
     protected Connection _currentConnection;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _connectionState.Load();
+    }
+    private void _gotopage()
+    {
+        
+    }
     // protected ConnectionState _connectionState = new ConnectionState { };
     public void onclick()
     {
@@ -62,6 +74,6 @@
     {
         _connectionState.Connections.Add(_currentConnection);
         _currentConnection = null;
-
+        _connectionState.Save();
     }
 }
