@@ -1,0 +1,210 @@
+﻿@inject IJSRuntime JSRuntime;
+
+<div class="header_page_top_header">
+    <div class="row content_body" style="@_headerPaddingTopStyle">
+        @{
+            var colCount = "col_8";
+            if (!CanBack && !OnRefreshClick.HasDelegate)
+            {
+                colCount = "col_12";
+            }
+        }
+
+        @if (CanBack)
+        {
+            <div class="col_2 align_left">
+                <span class="header_button content_body_smallest touch" @onclick="onBackClick"> <i class="las la-arrow-left la-2x"></i></span>
+            </div>
+        }
+        else if (OnRefreshClick.HasDelegate || TopRight != null)
+        {
+            <div class="col_2"></div>
+        }
+        @if (TopHeader != null)
+        {
+            <div class="@colCount animation_header" style="@(TopHeaderAlwaysVisible ? _headerStyleComplete : _headerStyle)">
+                @TopHeader
+            </div>
+        }
+        else
+        {
+            <div class="@colCount animation_header" style="@_headerStyle">
+                <h4 class="align_center content_body_smallest text_overflow">@TopHeaderCaption</h4>
+            </div>
+        }
+        @if (OnRefreshClick.HasDelegate)
+        {
+            <div class="col_2 align_right">
+                <span class="header_button content_body_smallest touch" @onclick="onRefreshClick"> <i class="las la-sync la-2x"></i></span>
+            </div>
+        }
+        else if (TopRight != null)
+        {
+            <div class="col_2 align_right">
+                @TopRight
+            </div>
+        }
+    </div>
+</div>
+<div class="header_page @_pageClass @_headerCaptionClass" @onscroll="onScroll" @ontouchstart="ontouchstart" @ontouchmove="ontouchmove" @ontouchend="ontouchend">
+    <RenderContent @ref="_content">
+        <div class="content_body_smallest align_center with_header" @ref="_scrollElement" style="@_headerPaddingTopStyle">
+            <div class="header_page_caption">
+                @if (Header1 != null)
+                {
+                    @Header1
+                }
+                else if (!string.IsNullOrEmpty(Header1Caption))
+                {
+                    <h2>@Header1Caption</h2>
+                }
+                @if (Header2 != null)
+                {
+                    @Header2
+                }
+                else if (!string.IsNullOrEmpty(Header2Caption))
+                {
+                    <h4>@Header2Caption</h4>
+                }
+                @if (Header3 != null)
+                {
+                    @Header3
+                }
+                else if (!string.IsNullOrEmpty(Header3Caption))
+                {
+                    <h6 class="text_description">@Header3Caption</h6>
+                }
+            </div>
+        </div>
+        <div class="content_body with_navigation">
+            @Body
+        </div>
+    </RenderContent>
+</div>
+@code {
+    private ElementReference _scrollElement;
+    private RenderContent _content;
+    private const string _headerStyleComplete = "opacity:1;transform:none;";
+    private string _headerStyle = "";
+    private string _headerCaptionClass = "";
+    private string _pageClass;
+    private string _headerPaddingTopStyle;
+    private int _headerPaddingValue;
+
+    [Parameter]
+    public bool CanBack { get; set; }
+    [Parameter]
+    public string TopHeaderCaption { get; set; }
+    [Parameter]
+    public string Header1Caption { get; set; }
+    [Parameter]
+    public string Header2Caption { get; set; }
+    [Parameter]
+    public string Header3Caption { get; set; }
+    [Parameter]
+    public RenderFragment Body { get; set; }
+    [Parameter]
+    public EventCallback OnBackClick { get; set; }
+    [Parameter]
+    public EventCallback OnRefreshClick { get; set; }
+    [Parameter]
+    public EventCallback<int> OnTabItemClick { get; set; }
+    [Parameter]
+    public RenderFragment TopHeader { get; set; }
+    [Parameter]
+    public RenderFragment Header1 { get; set; }
+    [Parameter]
+    public RenderFragment Header2 { get; set; }
+    [Parameter]
+    public RenderFragment Header3 { get; set; }
+    [Parameter]
+    public bool TopHeaderAlwaysVisible { get; set; }
+    [Parameter]
+    public RenderFragment TopRight { get; set; }
+
+    //Обязательно Task
+    //Только в этом случае Blazor гарантирует вызов StateHasChanged после завершения всего Task'а
+    private async Task onScroll()
+    {
+        _content.PreventChildRender();
+        var c = await JSRuntime.GetBoundingClientRect(_scrollElement);
+        //    var _tempHeaderStyle = _headerStyle;
+        if (c != null && (-c.Y) > (c.Height - 64 - _headerPaddingValue))
+        {
+            _headerStyle = _headerStyleComplete;
+            _headerCaptionClass = "hide_caption";
+
+        }
+        else
+        {
+            _headerStyle = "";
+            _headerCaptionClass = "";
+        }
+        //  if (_headerStyle == _tempHeaderStyle)
+        _content.PreventChildRender();
+    }
+    private async void onBackClick()
+    {
+        if (OnBackClick.HasDelegate)
+            await OnBackClick.InvokeAsync(null);
+    }
+
+    private async Task onRefreshClick()
+    {
+        if (OnRefreshClick.HasDelegate)
+            await OnRefreshClick.InvokeAsync(null);
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _headerPaddingValue = 0;//koberkB PlatformDeviceService.PlatformType.GetPlatformIndentTopValue();
+        _headerPaddingTopStyle = _headerPaddingValue > 0 ? $"padding-top: {_headerPaddingValue}px;" : "";
+        _pageClass = CanBack ? "show_transition" : "show_fade";
+    }
+
+    private double _touchX = 10000;
+    private double _touchY = 0;
+    private bool _isTouch = false;
+    private void ontouchstart(TouchEventArgs args)
+    {
+        if (args.Touches != null && args.Touches.Length > 0 && args.Touches[0].ClientX < 200)
+        {
+            _touchX = args.Touches[0].ClientX;
+            _touchY = args.Touches[0].ClientY;
+            _isTouch = true;
+            //   _content.StopChildRender();
+            //  _content.PreventChildRender();
+        }
+        else
+        {
+            _isTouch = false;
+            _touchX = 10000;
+            _touchY = 0;
+            //_content.StartChildRender();
+            //    _content.PreventChildRender();
+        }
+        _content.PreventChildRender();
+    }
+    private void ontouchmove(TouchEventArgs args)
+    {
+        if (_isTouch && args.Touches != null && args.Touches.Length > 0)
+        {
+            var touchX = args.Touches[0].ClientX - _touchX;
+            var touchY = args.Touches[0].ClientY - _touchY;
+            if (touchX > 80 && (touchY < 40 && touchY > -40))
+            {
+                _isTouch = false;
+                //   _content.StartChildRender();
+                onBackClick();
+            }
+        }
+        _content.PreventChildRender();
+    }
+    private void ontouchend()
+    {
+        _isTouch = false;
+        _content.PreventChildRender();
+        // _content.StartChildRender();
+    }
+}

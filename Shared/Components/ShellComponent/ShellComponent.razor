@@ -1,5 +1,7 @@
-﻿@{
-    <CascadingValue Name="ShellComponent" Value="@this" IsFixed>
+﻿@using Zoloto585.RetailService.Mobile.Components;
+@{
+    @*Тут обязательно без IsFixed - иначе stategaschanged не срабатывает на вложенном, если он без зависимостей*@
+    <CascadingValue Name="ShellComponent" Value="@this">
         @Pages
     </CascadingValue>
 }
@@ -25,6 +27,7 @@
         ShowTabContainer = showTab;
     }
     private Dictionary<string, TabNavigation> _tabItems = new Dictionary<string, TabNavigation>(StringComparer.OrdinalIgnoreCase);
+    private Dictionary<string, ShellPageItemBase> _activePages = new Dictionary<string, ShellPageItemBase>(StringComparer.OrdinalIgnoreCase);
     private TabNavigation _currentTab;
     internal bool CanGoBack = false;
 
@@ -68,6 +71,26 @@
             // StateHasChanged();
         }
     }
+
+    private string _getPageKey(string tabRouteName, string routeName) => $"{tabRouteName?.ToLower().Trim() ?? ""}{routeName?.ToLower().Trim() ?? ""}";
+
+    //Для добавления страницы
+    internal void _addNavigationPage(string tabRouteName, string routeName, ShellPageItemBase page)
+    {
+        var key = _getPageKey(tabRouteName, routeName);
+        if (key == "") return;
+        if (!_activePages.ContainsKey(key))
+            _activePages.Add(key, page);
+    }
+    //Для удаления страницы
+    internal void _removeNavigationPage(string tabRouteName, string routeName)
+    {
+        var key = _getPageKey(tabRouteName, routeName);
+        if (key == "") return;
+        if (_activePages.ContainsKey(key))
+            _activePages.Remove(key);
+    }
+
     internal object _getParam(string tabRouteName, string routeName)
     {
         tabRouteName = tabRouteName?.ToLower().Trim() ?? "";
@@ -121,14 +144,17 @@
     }
     internal bool GoBack()
     {
-        var ret = true;
-        if (!_currentTab._popPage())//Если это первая страница в стеке таба
+        var ret = false;
+        var key = _getPageKey(_currentTab._tabRouteName, _currentTab._pageInTabRouteName);
+        if (_activePages.ContainsKey(key))
         {
-            if (!_goToRoot())//Попробуем перейти к root странице
-            {
-                ret = false;//Если не перешли, то фактически перехода назад не было
-            }
+            ret = _activePages[key]._goBackFromComponent(); //true - если действие по возврату выполнено
         }
+        if (!ret)
+            ret = _currentTab._popPage(); //true - если действие по возврату выполнено - в стеке есть страница
+
+        if (!ret && !_goToRoot())//Если это первая страница в стеке таба и Попробуем перейти к root странице
+            ret = _goToRoot();//Если не перешли, то фактически перехода назад не было
 
         CanGoBack = _currentTab._hasPages();
         StateHasChanged();//Нужен здесь, т.к. событие происходит во внутреннем компоненте, а перерисовтаь надо этот
@@ -168,9 +194,6 @@
         return t != _currentTab;
     }
 
-
-
-
     internal class TabNavigation
     {
         internal string _tabRouteName { get; set; }
@@ -179,7 +202,7 @@
         private Stack<string> _stackPages = new Stack<string>();
         private Dictionary<string, object> _hashPages = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
-        private string _pageInTabRouteName = "";
+        internal string _pageInTabRouteName = "";
 
         internal object _getParam(string routeName)
         {

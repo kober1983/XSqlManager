@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
-using System.Diagnostics;
+using XSqlManager.Shared.Components.ShellComponent;
 
-namespace XSqlManager.Shared.Components.ShellComponent
+namespace Zoloto585.RetailService.Mobile.Components
 {
-    public abstract class ShellPageItemBase : ComponentBase
+    public abstract class ShellPageItemBase : ComponentBase, IDisposable
     {
         [CascadingParameter(Name = "ShellComponent")]
         public ShellComponent ShellComponent { get; set; }
@@ -12,9 +12,23 @@ namespace XSqlManager.Shared.Components.ShellComponent
         public bool CanGoBack { get; set; }
         [CascadingParameter(Name = "Param")]
         public object Param { get; set; }
-        public bool ShowForm { get; private set; }
-        public bool ShowPopUpForm { get; private set; }
 
+        [CascadingParameter(Name = "TabRouteName")]
+        public string TabRouteName { get; set; }
+        [CascadingParameter(Name = "RouteName")]
+        public string RouteName { get; set; }
+
+        protected bool ShowForm { get; private set; }
+        protected bool ShowPopUpForm { get; private set; }
+
+        protected override void OnInitialized()
+        {
+            ShellComponent?._addNavigationPage(TabRouteName, RouteName, this);
+        }
+        public virtual void Dispose()
+        {
+            ShellComponent?._removeNavigationPage(TabRouteName, RouteName);
+        }
         public virtual void CloseForm()
         {
             ShowForm = false;
@@ -47,7 +61,8 @@ namespace XSqlManager.Shared.Components.ShellComponent
             ClosePopUpForm();
             ShellComponent?.GoTo(tabRouteName, pageRouteName, param);
         }
-        protected virtual bool GoBackWithResult()
+        //true - если действие по возврату выполнено
+        internal virtual bool _goBackFromComponent()
         {
             if (ShowForm)
             {
@@ -59,12 +74,11 @@ namespace XSqlManager.Shared.Components.ShellComponent
                 ClosePopUpForm();
                 return true;
             }
-            else
-                return ShellComponent?.GoBack() ?? false;
+            return false;
         }
         public void GoBack()
         {
-            GoBackWithResult();
+            ShellComponent?.GoBack();
         }
     }
 }

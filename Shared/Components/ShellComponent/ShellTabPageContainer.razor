@@ -2,12 +2,14 @@
 {
     @* @_noOverflowStyle() *@
     <div class="navigation_container" hidden="@ShellComponent._isHidden(TabRouteName, RouteName)">
-        <CascadingValue Name="Param" Value="ShellComponent._getParam(TabRouteName, RouteName)">
-            <CascadingValue Name="CanGoBack" Value="@ShellComponent.CanGoBack">
-                @ChildContent
-            </CascadingValue>
-        </CascadingValue>
-    </div>
+        <CascadingValue Name="RouteName" Value="RouteName" IsFixed>
+         <CascadingValue Name="Param" Value="ShellComponent._getParam(TabRouteName, RouteName)">
+             <CascadingValue Name="CanGoBack" Value="@ShellComponent.CanGoBack">
+                 @ChildContent
+             </CascadingValue>
+         </CascadingValue>
+     </CascadingValue>
+ </div>
 }
 
 @code {
