@@ -1,0 +1,55 @@
+﻿@using XSqlManager.Classes.Services;
+@using XSqlManager.Shared.Components.ShellComponent;
+
+@inject NotifierService _nService
+@implements IDisposable
+
+<ShellComponent @ref="_component" ShowTabContainer="false">
+    <Pages>
+        <ShellTabPageItem TabRouteName="home">
+             <ShellTabPageContainer RouteName="">
+                 @*    <Zoloto585.RetailService.Mobile.Components.Pages.Home.Index></Zoloto585.RetailService.Mobile.Components.Pages.Home.Index> *@
+                </ShellTabPageContainer>
+        </ShellTabPageItem>
+    </Pages>
+    <Tabs>
+        <ShellTabItem TabRouteName="home">
+            <i class="las la-home"></i>
+            <small class="text_smallest">Главная</small>
+        </ShellTabItem>
+    </Tabs>
+</ShellComponent>
+
+
+
+@code {
+    private ShellComponent _component;
+    protected override void OnInitialized()
+    {
+        _nService.PlatformGoBackClicked += _onBackClicked;
+        //_nService.BottomPanelChanged += _bottomPanelChanged;
+    }
+    private void _onBackClicked(object sender, PlatformGoBackClickedArgs e)
+    {
+        e.IsGoBack = _component.GoBack();
+    }
+
+    // private async void _bottomPanelChanged(object sender, bool e)
+    // {
+    //     _component.SetShowTabContainer(e);
+    //     await InvokeAsync(StateHasChanged);
+    // }
+    public void Dispose()
+    {
+        _nService.PlatformGoBackClicked -= _onBackClicked;
+       // _nService.BottomPanelChanged -= _bottomPanelChanged;
+    }
+    internal void GoTo(string pageRouteName, object param, bool replace = false)
+    {
+        _component.GoTo(pageRouteName, param, replace);
+    }
+    internal void GoTo(string tabRouteName, string pageRouteName, object param)
+    {
+        _component.GoTo(pageRouteName, pageRouteName, param);
+    }
+}

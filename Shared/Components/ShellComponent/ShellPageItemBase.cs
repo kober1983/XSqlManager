@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using XSqlManager.Shared.Components.ShellComponent;
 
-namespace Zoloto585.RetailService.Mobile.Components
+namespace XSqlManager.Components
 {
     public abstract class ShellPageItemBase : ComponentBase, IDisposable
     {

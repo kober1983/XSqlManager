@@ -1,8 +1,12 @@
 ﻿@import '../common_css/init.scss';
 @import 'init.scss';
-$height-header: 64px; //Высота заголовка
+//$height-header: 64px; //Высота заголовка
+$height-header: 48px; //Высота заголовка
+$height-bottom: 65px; //Высота заголовка
 $header-background: $color-main2;
 $header-background-hover: lighten($color-main2, 5%);
+$color-background-opacity: #F2F1F6F0;
+
 
 $color-attention: #FF865E;
 $color-need-work: #C2A6DB;
@@ -12,6 +16,18 @@ $color-info: #FFFEE0;
 $color-info-border: #DBDAC0;
 $border-info: $border-thick dashed $color-info-border;
 $color-light-disabled: #D3D3D3;
+$color-light-success: #dff6dd; //Зелёный - успешная операция
+
+
+$transition-loading-delay: .2s;
+$transition-quick_page-change: all .25s ease-in-out;
+$transition-header: all .2s linear;
+$tab-navigation-rtom-color-background: #ededed;
+$box-shadow-control-success-hover: 0 0 0 0.2rem rgba($color-light-success,.8);
+
+$color-attention: #FF865E;
+
+
 
 #blazor-error-ui {
     display: none;
@@ -420,6 +436,7 @@ table.calendar {
     background: $color-block-warning-background;
     font-weight: bold;
 }
+
 .holiday_other {
     color: $color-error;
     font-weight: bold;

@@ -1,11 +1,28 @@
-﻿namespace XSqlManager;
+﻿using XSqlManager.Classes.Services;
 
-public partial class App : Application
+namespace XSqlManager;
+
+public partial class App : Application, IDisposable
 {
-	public App()
+    private readonly NotifierService _notifierService;
+    public App(NotifierService notifierService, MainPage mainPage)
 	{
 		InitializeComponent();
 
-		MainPage = new MainPage();
-	}
+		MainPage = mainPage;
+        _notifierService = notifierService;
+    }
+    protected override void OnSleep()
+    {
+        _notifierService.OnPlatformSleeped();
+    }
+
+    protected override void OnResume()
+    {
+        _notifierService.OnPlatformResumed();
+    }
+    public void Dispose()
+    {
+        _notifierService.OnPlatformDisposed();
+    }
 }

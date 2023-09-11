@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-
+using XSqlManager.Classes.Services;
 
 namespace XSqlManager;
 
@@ -21,7 +21,9 @@ public static class MauiProgram
 		builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
-		builder.Services.AddSingleton<ConnectionState>();
+        builder.Services.AddSingleton<MainPage>();
+        builder.Services.AddSingleton<NotifierService>();
+        builder.Services.AddSingleton<ConnectionState>();
 		//builder.Services.AddSingleton<WeatherForecastService>();
 
 		

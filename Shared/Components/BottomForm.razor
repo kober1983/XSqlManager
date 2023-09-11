@@ -46,13 +46,12 @@
 
     [Parameter]
     public EventCallback OnClose { get; set; }
-    private string _emptypanelStyle;
-    private string _movepanelStyle;
+    private string _emptypanelStyle = "";
+    private string _movepanelStyle = "";
 
     protected override void OnInitialized()
     {
         _maxHeight = DeviceInfo.Platform == DevicePlatform.iOS ? 80 : 90;
-        _emptypanelStyle = "";
         _movepanelStyle = "transform:translateY({0}px);transition-duration:0s;";
         _panelStyle = _emptypanelStyle;
         base.OnInitialized();
