@@ -27,7 +27,24 @@ $box-shadow-control-success-hover: 0 0 0 0.2rem rgba($color-light-success,.8);
 
 $color-attention: #FF865E;
 
+//Специфика для моб. телефона
+body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
+img, a {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+body {
+    overflow: hidden;
+    background: $color-background;
+}
 
 #blazor-error-ui {
     display: none;
@@ -254,7 +271,25 @@ ul.tab_navigation {
         }
     }
 }
+.bottom_form_fixed_top {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: $z-index;
 
+    .panel_light {
+        border-radius: $border-radius $border-radius 0 0;
+    }
+
+    .strip_form {
+        height: 5px;
+        width: 10vw;
+        background-color: $color-text-disabled;
+        border-radius: $border-radius * 5;
+        margin: 0 auto;
+    }
+}
 
 .text_overflow {
     white-space: nowrap;

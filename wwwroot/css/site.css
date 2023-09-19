@@ -7325,6 +7325,24 @@ html, body {
 /*Шрифт*/
 /* Transitions */
 /* Transform */
+body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+img, a {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+body {
+  overflow: hidden;
+  background: #eee;
+}
+
 #blazor-error-ui {
   display: none;
 }
@@ -7508,6 +7526,24 @@ ul.tab_navigation > li > div:hover {
 }
 ul.tab_navigation > li > div.selected {
   color: #7C13BF;
+}
+
+.bottom_form_fixed_top {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10001;
+}
+.bottom_form_fixed_top .panel_light {
+  border-radius: 0.25rem 0.25rem 0 0;
+}
+.bottom_form_fixed_top .strip_form {
+  height: 5px;
+  width: 10vw;
+  background-color: #bdbebe;
+  border-radius: 1.25rem;
+  margin: 0 auto;
 }
 
 .text_overflow {

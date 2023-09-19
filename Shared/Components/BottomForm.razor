@@ -7,7 +7,7 @@
 @onmouseup:stopPropagation @onmousemove:stopPropagation @onmousedown:stopPropagation>
     <div class="dialog_panel_bottom" @ref="_innerPanel" style="@_panelStyle">
         <div class="dialog_content panel_light" style="max-height: @(_maxHeight)vh;">
-            <div class="_bootom_form_fixed_top" @onmouseup="OnMouseUpInner" @ontouchend="OnTouchEndInner">
+            <div class="bottom_form_fixed_top" @onmouseup="OnMouseUpInner" @ontouchend="OnTouchEndInner">
                 <div class="content_body panel_light">
                     <div class="strip_form"></div>
                 </div>
@@ -20,7 +20,7 @@
                 {
                     @*Перенёс сюда, чтобы отрабатывало условие выше*@
                     <RenderContent @ref="_content">
-                        @Body
+                        @ChildContent
                     </RenderContent>
                 }
             </div>
@@ -42,7 +42,7 @@
     public bool ShowDialog { get; set; }
 
     [Parameter]
-    public RenderFragment Body { get; set; }
+    public RenderFragment ChildContent { get; set; }
 
     [Parameter]
     public EventCallback OnClose { get; set; }
